@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: strapi-postgres
+    env_file: ./env/postgres.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d strapi_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cms:
+    build:
+      context: ../
+      dockerfile: apps/cms/Dockerfile
+    container_name: strapi-cms
+    env_file: ./env/cms.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:1337/_health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    ports:
+      - "1337:1337"
+
+  web:
+    build:
+      context: ../
+      dockerfile: apps/web/Dockerfile
+    container_name: nextjs-web
+    env_file: ./env/web.env
+    depends_on:
+      cms:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      - cms
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:

@@ -1,0 +1,4 @@
+pnpm exec prettier --write "apps/**/*.{js,ts,jsx,tsx,json,css,md}"
+pnpm lint-staged
+# pnpm --filter cms lint
+# pnpm --filter web lint
