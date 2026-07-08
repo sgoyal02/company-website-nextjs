@@ -213,9 +213,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^21.2.0
         version: 21.2.0
-      husky:
-        specifier: ^9.1.7
-        version: 9.1.7
       lint-staged:
         specifier: ^17.0.8
         version: 17.0.8
@@ -5433,11 +5430,6 @@ packages:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
 
-  husky@9.1.7:
-    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
-    engines: {node: '>=18'}
-    hasBin: true
-
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -9323,7 +9315,7 @@ snapshots:
   '@esbuild/win32-x64@0.27.7':
     optional: true
 
-  '@eslint-community/eslint-utils@4.9.1(eslint@8.45.0)':
+  '@eslint-community/eslint-utils@4.9.1(eslint@8.45.0(supports-color@5.5.0))':
     dependencies:
       eslint: 8.45.0(supports-color@5.5.0)
       eslint-visitor-keys: 3.4.3
@@ -14175,7 +14167,7 @@ snapshots:
 
   eslint@8.45.0(supports-color@5.5.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.1(eslint@8.45.0)
+      '@eslint-community/eslint-utils': 4.9.1(eslint@8.45.0(supports-color@5.5.0))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/eslintrc': 2.1.4(supports-color@5.5.0)
       '@eslint/js': 8.44.0
@@ -14996,8 +14988,6 @@ snapshots:
       - supports-color
 
   human-signals@2.1.0: {}
-
-  husky@9.1.7: {}
 
   iconv-lite@0.4.24:
     dependencies:
