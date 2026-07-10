@@ -1,13 +1,16 @@
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL|| 'http://localhost:1337';
 
-export async function fetchFromStrapi(endpoint: string, options: RequestInit= {}) {
+export async function fetchStrapi(endpoint: string, options:RequestInit= {}) {
   try {
     const res = await fetch(`${STRAPI_URL}/api/${endpoint}`, {
       ...options,
-      headers: {
-        'Content-Type': 'application/json',
+      headers: {'Content-Type': 'application/json',
         ...options.headers,
       },
+      next: {
+        revalidate: 60, //-def isr val
+        ...((options.next as any)|| {}),
+      }
     });
     if (!res.ok) {
       throw new Error(`strapi get err: status ${res.status}`);
