@@ -12,7 +12,8 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "photo": {
       "type": "media",
@@ -23,10 +24,14 @@
       ]
     },
     "designation": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "bio": {
       "type": "blocks"
+    },
+    "email": {
+      "type": "email"
     }
   }
 }

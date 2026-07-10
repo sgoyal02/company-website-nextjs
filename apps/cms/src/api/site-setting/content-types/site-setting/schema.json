@@ -12,7 +12,8 @@
   "pluginOptions": {},
   "attributes": {
     "companyName": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "logo": {
       "type": "media",
@@ -25,6 +26,13 @@
       ]
     },
     "footerText": {
+      "type": "text",
+      "default": "All rights reserved."
+    },
+    "bannerTitle": {
+      "type": "string"
+    },
+    "bannerSubtitle": {
       "type": "text"
     }
   }

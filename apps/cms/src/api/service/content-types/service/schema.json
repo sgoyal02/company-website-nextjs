@@ -12,10 +12,12 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "description": {
-      "type": "blocks"
+      "type": "blocks",
+      "required": true
     },
     "image": {
       "type": "media",
@@ -28,6 +30,15 @@
     },
     "price": {
       "type": "decimal"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

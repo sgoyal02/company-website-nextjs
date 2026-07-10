@@ -12,22 +12,23 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
+      "targetField": "title",
+      "required": true
     },
     "author": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
-    "date": {
-      "type": "date"
+    "publishDate": {
+      "type": "date",
+      "required": true
     },
-    "content": {
-      "type": "blocks"
-    },
-    "image": {
+    "coverImage": {
       "type": "media",
       "multiple": false,
       "allowedTypes": [
@@ -35,6 +36,17 @@
         "files",
         "videos"
       ]
+    },
+    "blogContent": {
+      "type": "blocks",
+      "required": true
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "subTxt": {
+      "type": "text"
     }
   }
 }
