@@ -3,7 +3,12 @@ import AboutPage from '@/pages/about';
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: ({
+    fill,
+    unoptimized,
+    priority,
+    ...props
+  }: any) => <img {...props} />,
 }));
 
 jest.mock('@strapi/blocks-react-renderer', () => ({

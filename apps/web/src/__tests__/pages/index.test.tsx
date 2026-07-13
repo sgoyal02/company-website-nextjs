@@ -3,7 +3,12 @@ import Home from '@/pages/index';
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: ({
+    fill,
+    unoptimized,
+    priority,
+    ...props
+  }: any) => <img {...props} />,
 }));
 
 const mockHomeData = {

@@ -1,6 +1,6 @@
 
 import { GetStaticProps } from 'next';
-import { Service, ServiceProps } from '@/types';
+import { ServiceProps } from '@/types';
 import { fetchStrapi } from '@/lib/strapi';
 import { blockToTxt } from '@/utils/helpers';
 import Image from 'next/image';
@@ -46,7 +46,7 @@ export default function ServicesPage({ services, error }:ServiceProps) {
                 <p className="text-slate-600 leading-relaxed line-clamp-5 mb-6 text-sm">
                   {blockToTxt(service.description)}
                 </p>
-                {service.price && (
+                {service.price!==undefined && (
                   <p className="text-2xl font-bold text-primary mb-6">Rs {service.price}</p>
                 )}
                 <button className="btn btn-primary w-full">
@@ -74,8 +74,8 @@ export const getStaticProps: GetStaticProps<ServiceProps>= async () => {
       },
       revalidate: 60,
     };
-  }catch (err: any) {
-    console.error("err in fetch serv:", err);
+  }catch (err) {
+    // const errMsg =err instanceof Error ? err.message : "Unknown error";
     return {
       props: {
         services: [],

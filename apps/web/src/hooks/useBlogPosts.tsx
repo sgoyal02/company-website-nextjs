@@ -2,7 +2,7 @@ import { fetchStrapi } from '@/lib/strapi';
 import { BlogPost } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
-export const useBlogPosts= (initData:BlogPost[]) => {
+export const useBlogPosts= (initData?:BlogPost[]) => {
   return useQuery<BlogPost[]>({
     queryKey: ['blogPosts'],
     queryFn:async () => {

@@ -20,7 +20,7 @@ export type Service = {
   slug:string;
   description: any;
   price?: number;
-  image?:{ url: string };
+  image?:{ url: string } | null;
   isFeatured: boolean;
 };
 

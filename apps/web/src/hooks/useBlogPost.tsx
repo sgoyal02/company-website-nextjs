@@ -8,7 +8,7 @@ type UseBlogPostProps = {
 };
 
 export const useBlogPost= ({slug, initData}:UseBlogPostProps) => {
-  return useQuery<BlogPost>({
+  return useQuery<BlogPost| undefined>({
     queryKey: ['blogPost', slug],
     queryFn:async() => {
       const res= await fetchStrapi(`blog-posts?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=coverImage`);

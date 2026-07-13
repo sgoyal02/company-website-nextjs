@@ -1,4 +1,5 @@
 import { SiteSetting } from "@/types";
+import Link from "next/link";
 
 export default function Footer({settings}: {settings?:SiteSetting }) {
   return (
@@ -10,9 +11,10 @@ export default function Footer({settings}: {settings?:SiteSetting }) {
               {settings?.footerText || "All rights reserved."}
             </p>
           </div>
-          <p className="text-slate-400 text-sm">
-            Privacy policy 
-          </p>
+          <Link href={"https://www.mindfiresolutions.com/privacy-policy/"} 
+          className="text-slate-400 text-sm hover:underline hover:text-primary transition-colors">
+          Privacy policy 
+          </Link>
         </div>
       </div>
     </footer>
