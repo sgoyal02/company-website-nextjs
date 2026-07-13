@@ -12,7 +12,9 @@
     "build:cms": "pnpm --filter cms build",
     "docker:up": "docker compose -f infra/docker-compose.yml up --build",
     "docker:down": "docker compose -f infra/docker-compose.yml down",
-    "test":"pnpm --filter web test"
+    "lint": "pnpm --filter web lint",
+    "test": "pnpm --filter web test",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.0",
     "@commitlint/config-conventional": "^21.2.0",
+    "husky": "^9.1.7",
     "lint-staged": "^17.0.8",
     "prettier": "^3.9.4"
   }

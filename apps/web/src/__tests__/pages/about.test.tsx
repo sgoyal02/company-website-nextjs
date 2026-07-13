@@ -1,18 +1,26 @@
 import { render, screen } from '@testing-library/react';
 import AboutPage from '@/pages/about';
+import { StrapiRichText } from '@/types';
 
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({
-    fill,
-    unoptimized,
-    priority,
+    fill: _fill,
+    unoptimized: _unoptimized,
+    priority: _priority,
     ...props
-  }: any) => <img {...props} />,
+  }: {
+    fill?: boolean;
+    unoptimized?: boolean;
+    priority?: boolean;
+    src: string;
+    alt?: string;
+    [key: string]: unknown;
+  }) => <img {...props} alt={props.alt || ''} />,
 }));
 
 jest.mock('@strapi/blocks-react-renderer', () => ({
-  BlocksRenderer: ({ content }: any) => (
+  BlocksRenderer: ({ content }: {content: unknown;}) => (
     <div data-testid="blocks-renderer">
       {JSON.stringify(content)}
     </div>
@@ -29,7 +37,7 @@ const mockBlocks = [
       },
     ],
   },
-];
+]satisfies StrapiRichText;
 
 const mockAboutData = {
   title: 'About Us',
@@ -37,11 +45,6 @@ const mockAboutData = {
   mission: mockBlocks,
   vision: mockBlocks,
 };
-
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: (props: any) => <img {...props} />,
-}));
 
 describe('About page-tests', () => {
   it('test- about page title', () => {

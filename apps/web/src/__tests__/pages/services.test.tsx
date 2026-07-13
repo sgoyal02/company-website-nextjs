@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ServicesPage, {getStaticProps } from "@/pages/services";
 import { fetchStrapi } from "@/lib/strapi";
 import { blockToTxt } from "@/utils/helpers";
+import { GetStaticPropsContext } from "next";
+import { ServiceProps } from "@/types";
 
 //mock--
 jest.mock("@/lib/strapi", () => ({
@@ -10,13 +12,21 @@ jest.mock("@/lib/strapi", () => ({
 jest.mock("@/utils/helpers", () => ({
   blockToTxt: jest.fn(() => "Service description"),
 }));
-jest.mock("next/image", () => ({
-  __esModule:true,
+jest.mock('next/image', () => ({
+  __esModule: true,
   default: ({
-    fill,
-    unoptimized,
+    fill: _fill,
+    unoptimized: _unoptimized,
+    priority: _priority,
     ...props
-  }:any)=> <img {...props}/>
+  }: {
+    fill?: boolean;
+    unoptimized?: boolean;
+    priority?: boolean;
+    src: string;
+    alt?: string;
+    [key: string]: unknown;
+  }) => <img {...props} alt={props.alt || ''} />,
 }));
 
 //mock data-
@@ -25,12 +35,16 @@ const mockServices = [
     id:1,
     title:"Web Development",
     slug:"web-development",
-    description:[
-      {children:[
+    description: [
+      {
+        type: "paragraph",
+        children: [
           {
-            text:"Build modern websites"
-          }
-        ]}
+            type: "text",
+            text: "Build modern websites",
+          },
+        ],
+      },
     ],
     price:5000,
     image:{
@@ -42,20 +56,22 @@ const mockServices = [
     id:2,
     title:"SEO Service",
     slug:"seo-service",
-    description:[
+     description: [
       {
-        children:[
+        type: "paragraph",
+        children: [
           {
-            text:"Improve ranking"
-          }
-        ]
-      }
+            type: "text",
+            text: "Improve ranking",
+          },
+        ],
+      },
     ],
     price:0,
     image:null,
     isFeatured:false
   }
-];
+]satisfies ServiceProps["services"];
 
 //testing--
 describe("page comp tests",()=>{
@@ -95,7 +111,7 @@ describe("getstaticprops service- test", ()=>{
 
     it("get service return prop- test", async()=>{
         (fetchStrapi as jest.Mock).mockResolvedValue({data:mockServices});
-        const res= await getStaticProps({} as any);
+        const res= await getStaticProps({} as GetStaticPropsContext);
         expect(fetchStrapi).toHaveBeenCalledWith("services?populate=image");
         expect(res).toEqual({
             props:{services: mockServices},
@@ -105,7 +121,7 @@ describe("getstaticprops service- test", ()=>{
 
     it("strapi fail -test", async()=>{
         (fetchStrapi as jest.Mock).mockRejectedValue(new Error('API failed'));
-        const res= await getStaticProps({} as any);
+        const res= await getStaticProps({} as GetStaticPropsContext);
         expect(res).toEqual({
             props:{ services:[], error:"Fail to load service- try again."},
             revalidate:30
@@ -114,7 +130,7 @@ describe("getstaticprops service- test", ()=>{
 
     it("no service res- test", async()=>{
         (fetchStrapi as jest.Mock).mockResolvedValue({data:[]});
-        const res= await getStaticProps({} as any);
+        const res= await getStaticProps({} as GetStaticPropsContext);
         expect(res).toEqual({
             props:{ services:[]},
             revalidate:60

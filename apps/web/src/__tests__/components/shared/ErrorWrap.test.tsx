@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  fireEvent
 } from "@testing-library/react";
 import ErrorWrap from "@/components/shared/ErrorWrap";
 

@@ -1,7 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import BlogDetail, {getStaticPaths,getStaticProps} from "@/pages/blog/[slug]";
 import { useBlogPost } from "@/hooks/useBlogPost";
 import { fetchStrapi } from "@/lib/strapi";
+import { GetStaticPathsContext, GetStaticPropsContext } from "next";
+import { BlogPost } from "@/types";
 
 //mocks init-
 
@@ -11,14 +13,21 @@ jest.mock("@/hooks/useBlogPost", () => ({
 jest.mock("@/lib/strapi", () => ({
   fetchStrapi: jest.fn(),
 }));
-jest.mock("next/image", () => ({
+jest.mock('next/image', () => ({
   __esModule: true,
   default: ({
-    fill,
-    unoptimized,
-    priority,
+    fill: _fill,
+    unoptimized: _unoptimized,
+    priority: _priority,
     ...props
-  }: any) => <img {...props} />,
+  }: {
+    fill?: boolean;
+    unoptimized?: boolean;
+    priority?: boolean;
+    src: string;
+    alt?: string;
+    [key: string]: unknown;
+  }) => <img {...props} alt={props.alt || ''} />,
 }));
 
 jest.mock("@/utils/helpers", () => ({
@@ -27,7 +36,7 @@ jest.mock("@/utils/helpers", () => ({
 }));
 
 jest.mock("@strapi/blocks-react-renderer", () => ({
-  BlocksRenderer: ({ content }: any) => (
+  BlocksRenderer: ({ content }: {content:unknown}) => (
     <div data-testid="blocks-renderer">
       {JSON.stringify(content)}
     </div>
@@ -59,7 +68,7 @@ const mockPost = {
     url: "/nextjs.jpg",
     alternativeText: "Next image",
   },
-};
+}satisfies BlogPost;
 
 //util-
 const mockUseBlogPost = (
@@ -114,7 +123,7 @@ describe("blogpost getstatic path-testing", ()=>{
         (fetchStrapi as jest.Mock).mockResolvedValue({
             data: [{slug: "first-post"},{slug: "second-post"}]
         });
-        const result = await getStaticPaths({} as any);
+        const result = await getStaticPaths({} as GetStaticPathsContext);
         expect(fetchStrapi).toHaveBeenCalledWith("blog-posts?fields[0]=slug");
         expect(result).toEqual({
             paths: [
@@ -131,7 +140,7 @@ describe("blogpost getstatic path-testing", ()=>{
 
     it("strapi fail empty path- test", async () => {
         (fetchStrapi as jest.Mock).mockRejectedValue(new Error("API error"));
-        const res = await getStaticPaths({} as any);
+        const res = await getStaticPaths({} as GetStaticPathsContext);
         expect(res).toEqual({
         paths: [],
         fallback: "blocking",
@@ -151,7 +160,7 @@ describe("blogpost getsstatic prop- testing", ()=>{
             slug:
             "next-js-for-modern-web-development",
         }
-        } as any);
+        } as GetStaticPropsContext);
         expect(fetchStrapi).toHaveBeenCalledWith(
             "blog-posts?filters[slug][$eq]=next-js-for-modern-web-development&populate=coverImage"
         );
@@ -173,7 +182,7 @@ describe("blogpost getsstatic prop- testing", ()=>{
         params: {
             slug: "missing-post",
         },
-        } as any);
+        } as GetStaticPropsContext);
 
         expect(res).toEqual({
         props: {

@@ -4,17 +4,25 @@ import BlogPage from '@/pages/blog';
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({
-    fill,
-    unoptimized,
-    priority,
+    fill: _fill,
+    unoptimized: _unoptimized,
+    priority: _priority,
     ...props
-  }: any) => <img {...props} />,
+  }: {
+    fill?: boolean;
+    unoptimized?: boolean;
+    priority?: boolean;
+    src: string;
+    alt?: string;
+    [key: string]: unknown;
+  }) => <img {...props} alt={props.alt || ''} />,
 }));
 
 jest.mock('@/hooks/useBlogPosts', () => ({
   useBlogPosts: jest.fn(),
 }));
 import { useBlogPosts } from '@/hooks/useBlogPosts';
+import { BlogPost } from '@/types';
 
 const mockBlogs = [
   {
@@ -62,7 +70,7 @@ const mockBlogs = [
       },
     ],
   },
-];
+]satisfies BlogPost[];
 
 
 describe('Blogs page- tests', () => {

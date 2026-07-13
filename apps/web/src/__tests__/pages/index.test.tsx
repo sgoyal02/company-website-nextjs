@@ -1,14 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import Home from '@/pages/index';
+import { HomeProps } from '@/types';
 
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({
-    fill,
-    unoptimized,
-    priority,
+    fill: _fill,
+    unoptimized: _unoptimized,
+    priority: _priority,
     ...props
-  }: any) => <img {...props} />,
+  }: {
+    fill?: boolean;
+    unoptimized?: boolean;
+    priority?: boolean;
+    src: string;
+    alt?: string;
+    [key: string]: unknown;
+  }) => <img {...props} alt={props.alt || ''} />,
 }));
 
 const mockHomeData = {
@@ -60,7 +68,7 @@ const mockHomeData = {
   ],
 
   blogs: [],
-};
+} satisfies Omit<HomeProps, "error">;
 
 
 describe('Home page tests-', () => {
