@@ -13,8 +13,7 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "outDir": "dist",
-    "rootDir": ".",
-    "ignoreDeprecations": "6.0"
+    "rootDir": "."
   },
   "include": ["./", "./**/*.ts", "./**/*.js", "src/**/*.json"],
 
