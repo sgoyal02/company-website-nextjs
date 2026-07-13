@@ -25,8 +25,7 @@ MyApp.getInitialProps= async() => {
   try {
     const res = await fetchStrapi('site-setting?populate=*');
     return {settings: res.data};
-  } catch(err) {
-    console.error("Fail in app site setting: ", err);
+  } catch {
     return {settings: null};
   }
 };

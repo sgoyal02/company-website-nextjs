@@ -1,3 +1,4 @@
+import { STRAPI_URL } from '@/constants/CONFIG';
 import { fetchStrapi } from '@/lib/strapi';
 import { About, AboutProps } from '@/types';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
@@ -37,7 +38,7 @@ export default function AboutPage({ aboutData, error, teamMem }: AboutProps) {
             <div className="relative w-full h-[420px] rounded-md overflow-hidden mb-10 shadow-lg">
                 {aboutData.aboutImg?.url && (
                     <Image
-                        src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${aboutData.aboutImg.url}`}
+                        src={`${STRAPI_URL}${aboutData.aboutImg.url}`}
                         alt={aboutData.aboutImg.alternativeText || "About Us"}
                         fill
                         className="object-cover"
@@ -51,14 +52,16 @@ export default function AboutPage({ aboutData, error, teamMem }: AboutProps) {
                 <div className="service-card p-10">
                     <h2 className="text-2xl font-semibold text-primary mb-6">Our Mission</h2>
                     <div className="text-sm leading-relaxed text-slate-600">
+                        {aboutData.mission && 
                         <BlocksRenderer content={aboutData.mission} />
+                        }
                     </div>
                 </div>
 
                 <div className="service-card p-10">
                     <h2 className="text-2xl font-semibold text-primary mb-6">Our Vision</h2>
                     <div className="text-sm leading-relaxed text-slate-600">
-                        <BlocksRenderer content={aboutData.vision} />
+                        {aboutData.vision && <BlocksRenderer content={aboutData.vision} />}
                     </div>
                 </div>
             </div>
@@ -72,7 +75,7 @@ export default function AboutPage({ aboutData, error, teamMem }: AboutProps) {
                             <div key={user.id} className="team-card text-center">
                                 <div className="relative w-40 h-40 mx-auto mb-6 rounded-md overflow-hidden shadow-md">
                                         <Image
-                                            src={user.photo?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${user.photo.url}` : '/noImg.jpg'}
+                                            src={user.photo?.url ? `${STRAPI_URL}${user.photo.url}` : '/noImg.jpg'}
                                             alt={user.name}
                                             fill
                                             className="object-cover"
@@ -86,7 +89,7 @@ export default function AboutPage({ aboutData, error, teamMem }: AboutProps) {
                                     <p className="text-sm text-slate-500 mt-1">{user.email}</p>
                                 )}
                                 <div className='text-slate-600 mt-6 text-left line-clamp-4'>
-                                    <BlocksRenderer content={user.bio || ""}/>
+                                    {user.bio && <BlocksRenderer content={user.bio || ""}/>}
                                 </div>
                             </div>
                         ))
@@ -109,7 +112,6 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
     ]);
     const aboutData= res[0].status === 'fulfilled' ? res[0].value : null;
     const teamData= res[1].status === 'fulfilled' ? res[1].value : null;
-    console.log("teammem data: ", teamData, teamData.data[2].photo);
         return {
             props: { 
             aboutData:aboutData?.data || ({} as About), 
@@ -118,8 +120,7 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
         },
         revalidate: 60,
         };
-    } catch (err) {
-        console.error(err);
+    } catch{
         return {
             props: {
                 aboutData: null,

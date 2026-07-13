@@ -1,13 +1,13 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { BlogPostProps } from '@/types';
+import { BlogPostProps, BlogSlugRes } from '@/types';
 import { useBlogPost } from '@/hooks/useBlogPost';
 import { fetchStrapi } from '@/lib/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
-import { formatDate, formatFulltDate } from '@/utils/helpers';
+import { formatDate } from '@/utils/helpers';
+import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function BlogDetail({ initPost, slug }: BlogPostProps) {
-    console.log("inside sug: ", initPost,slug);
   const {data:post= initPost, isLoading, error }=useBlogPost({slug, initData: initPost});
   if (error||!post) {
     return (
@@ -28,7 +28,7 @@ export default function BlogDetail({ initPost, slug }: BlogPostProps) {
       {post.coverImage?.url && (
         <div className="relative overflow-hidden rounded-md w-full h-72 mb-2">
         <Image
-          src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${post.coverImage.url}`}
+          src={`${STRAPI_URL}${post.coverImage.url}`}
           alt={post.title}
           fill
           sizes="(max-width:768px) 100vw, 33vw"
@@ -60,7 +60,7 @@ export default function BlogDetail({ initPost, slug }: BlogPostProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const res = await fetchStrapi('blog-posts?fields[0]=slug');
-    const paths = res.data.map((post: any) => ({
+    const paths = res.data.map((post: BlogSlugRes) => ({
       params: { slug: post.slug },
     }));
     return { paths, fallback: 'blocking' };
@@ -70,7 +70,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<BlogPostProps>= async({ params }) => {
-  let slugPart= params?.slug  ?? "";
+  const slugPart= params?.slug  ?? "";
    const slug = typeof slugPart === "string" ? slugPart
                 : Array.isArray(slugPart) ? slugPart[0] : "";
   try {

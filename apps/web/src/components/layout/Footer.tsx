@@ -1,7 +1,7 @@
 import { SiteSetting } from "@/types";
 import Link from "next/link";
 
-export default function Footer({settings}: {settings?:SiteSetting }) {
+export default function Footer({settings}: {settings?:SiteSetting|null }) {
   return (
     <footer className="footer py-12">
       <div className="max-w-6xl mx-auto px-6">

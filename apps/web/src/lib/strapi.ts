@@ -1,6 +1,13 @@
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL|| 'http://localhost:1337';
+import { STRAPI_URL } from "@/constants/CONFIG";
 
-export async function fetchStrapi(endpoint: string, options:RequestInit= {}) {
+type FetchOptions= RequestInit & {
+  next?: {
+    revalidate?: number;
+    tags?: string[];
+  };
+};
+
+export async function fetchStrapi(endpoint: string, options:FetchOptions= {}) {
   try {
     const res = await fetch(`${STRAPI_URL}/api/${endpoint}`, {
       ...options,
@@ -9,7 +16,7 @@ export async function fetchStrapi(endpoint: string, options:RequestInit= {}) {
       },
       next: {
         revalidate: 60, //-def isr val
-        ...((options.next as any)|| {}),
+        ...options.next ,
       }
     });
     if (!res.ok) {
@@ -17,7 +24,6 @@ export async function fetchStrapi(endpoint: string, options:RequestInit= {}) {
     }
     return await res.json();
   } catch (error) {
-    console.error(`fail in fetch api: ${endpoint}`, error);
     throw error;
   }
 }

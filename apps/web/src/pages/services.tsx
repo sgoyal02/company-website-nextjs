@@ -4,6 +4,7 @@ import { ServiceProps } from '@/types';
 import { fetchStrapi } from '@/lib/strapi';
 import { blockToTxt } from '@/utils/helpers';
 import Image from 'next/image';
+import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function ServicesPage({ services, error }:ServiceProps) {
   if (error) {
@@ -34,7 +35,7 @@ export default function ServicesPage({ services, error }:ServiceProps) {
             <div key={service.id} className="service-card group">
                 <div className="relative overflow-hidden rounded-md mb-4 border w-full h-52 border-card-border">
                   <Image
-                    src={service.image?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${service.image.url}` : '/noImg.jpg'}
+                    src={service.image?.url ? `${STRAPI_URL}${service.image.url}` : '/noImg.jpg'}
                     alt={service.title}
                     fill
                     unoptimized
@@ -74,7 +75,7 @@ export const getStaticProps: GetStaticProps<ServiceProps>= async () => {
       },
       revalidate: 60,
     };
-  }catch (err) {
+  }catch{
     // const errMsg =err instanceof Error ? err.message : "Unknown error";
     return {
       props: {

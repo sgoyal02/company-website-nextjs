@@ -1,24 +1,11 @@
-export type SiteSetting={
-  companyName:string;
-  logo?: { url: string };
-  footerText?: string;
-  bannerTitle?: string;
-  bannerSubtitle?: string;
-};
+import type { BlocksContent } from "@strapi/blocks-react-renderer";
 
-export type About={
-    title:string;
-    description:any;
-    mission?:any;
-    vision?:any;
-    aboutImg?:{ url: string,alternativeText?: string; };
-}
-
+export type StrapiRichText = BlocksContent;
 export type Service = {
   id:number;
   title:string;
   slug:string;
-  description: any;
+  description: StrapiRichText;
   price?: number;
   image?:{ url: string } | null;
   isFeatured: boolean;
@@ -28,7 +15,7 @@ export type TeamMember = {
   id: number;
   name: string;
   designation: string;
-  bio?: any;
+  bio?: StrapiRichText;
   photo?: { url: string, alternativeText:string };
   email?: string;
 };
@@ -39,7 +26,7 @@ export type BlogPost = {
   slug: string;
   author: string;
   publishDate: string;
-  blogContent: any;
+  blogContent: StrapiRichText;
   coverImage?: { url: string, alternativeText:string }  | null;
   isFeatured: boolean;
   subTxt?:string;
@@ -53,8 +40,8 @@ export type HomeProps= {
 }
 
 export type AppInitProps={
-    pageProps: any
-    settings?:any
+  pageProps: Record<string, unknown>;
+  settings?: SiteSetting | null;
 }
 
 export type ServiceProps={
@@ -75,4 +62,24 @@ export type AboutProps={
     aboutData:About|null,
     teamMem: TeamMember[],
     error?:string|null
+}
+
+export type BlogSlugRes= {
+  slug:string;
+};
+
+export type SiteSetting={
+  companyName:string;
+  logo?: { url: string };
+  footerText?: string;
+  bannerTitle?: string;
+  bannerSubtitle?: string;
+};
+
+export type About={
+    title:string;
+    description:StrapiRichText;
+    mission?:StrapiRichText;
+    vision?:StrapiRichText;
+    aboutImg?:{ url: string,alternativeText?: string; };
 }

@@ -3,8 +3,8 @@ import Link from 'next/link';
 import {BlogsProps } from '@/types';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { fetchStrapi } from '@/lib/strapi';
-import defImg from '../../../public/noImg.jpg';
 import Image from 'next/image';
+import { STRAPI_URL } from '@/constants/CONFIG';
 
 
 export default function BlogPage({ initBlogs }:BlogsProps) {
@@ -39,7 +39,7 @@ export default function BlogPage({ initBlogs }:BlogsProps) {
             <Link key={post.id} href={`/blog/${post.slug}`} className="blog-card group block">
                 <div className="relative overflow-hidden rounded-md w-full h-52">
                   <Image
-                    src={post.coverImage?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
+                    src={post.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
                     alt={post.title}
                     fill
                     unoptimized
@@ -72,12 +72,11 @@ export default function BlogPage({ initBlogs }:BlogsProps) {
 export const getStaticProps:GetStaticProps<BlogsProps> = async () => {
   try {
     const res = await fetchStrapi('blog-posts?populate=coverImage&sort=publishDate:desc');
-    console.log("res blogs: ", res.data);
     return {
       props: {initBlogs: res.data},
       revalidate: 60
     };
-  } catch(err) {
+  } catch{
     return {
       props:{initBlogs:[]},
       revalidate: 30

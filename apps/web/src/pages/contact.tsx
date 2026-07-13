@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
 import { contactSchema, ContactFormData } from '@/validations/contact';
+import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState<ContactFormData>({name: '',email: '',message: '',});
@@ -9,7 +10,7 @@ export default function ContactPage() {
 
   const mutation = useMutation({
     mutationFn: async (data: ContactFormData) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/contact-messages`, {
+      const res = await fetch(`${STRAPI_URL}/api/contact-messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data }),
@@ -23,8 +24,12 @@ export default function ContactPage() {
       setFormData({ name: '', email: '', message: '' });
       setErrors({});
     },
-    onError: (err: any) => {
-      alert(err.message || "Something went wrong. Please try again.");
+    onError: (err: unknown) => {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
     },
   });
 

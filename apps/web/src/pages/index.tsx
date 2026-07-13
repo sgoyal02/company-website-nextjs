@@ -1,10 +1,10 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { GetStaticProps } from 'next';
 import { fetchStrapi } from '@/lib/strapi';
 import { HomeProps, SiteSetting } from '@/types';
 import { blockToTxt } from '@/utils/helpers';
 import Image from 'next/image';
+import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function Home({siteSettings, services, blogs, error}: HomeProps) {
   if (error) {
@@ -27,11 +27,11 @@ export default function Home({siteSettings, services, blogs, error}: HomeProps) 
       <Head>
         <title>{siteSettings?.companyName|| 'Company website'}</title>
         <meta name="description" content={siteSettings?.bannerSubtitle || ""}/>
-         {/* {siteSettings?.logo?.url && (
+         {siteSettings?.logo?.url && (
           <link rel="icon"
-            href={`${process.env.NEXT_PUBLIC_STRAPI_URL}${siteSettings.logo.url}`}
+            href={`${STRAPI_URL}${siteSettings.logo.url}`}
           />
-        )} */}
+        )}
       </Head>
 
       <section className="banner py-24 md:py-32 text-center">
@@ -57,7 +57,7 @@ export default function Home({siteSettings, services, blogs, error}: HomeProps) 
               <div key={service.id} className="service-card">
                   <div className="relative w-full h-50 mb-6 overflow-hidden rounded-md">
                     <Image
-                      src={service.image?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${service.image.url}` : '/noImg.jpg'}
+                      src={service.image?.url ? `${STRAPI_URL}${service.image.url}` : '/noImg.jpg'}
                       alt={service.title}
                       fill
                       unoptimized
@@ -88,7 +88,7 @@ export default function Home({siteSettings, services, blogs, error}: HomeProps) 
               <div key={post.id} className="blog-card overflow-hidden group cursor-pointer">
                   <div className="relative w-full h-50 overflow-hidden">
                     <Image
-                      src={post?.coverImage?.url ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
+                      src={post?.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
                       alt={post.title}
                       fill
                       unoptimized
@@ -130,12 +130,6 @@ export const getStaticProps: GetStaticProps<HomeProps>= async () => {
     const servicesRes= res[1].status === 'fulfilled' ? res[1].value : null;
     const blogsRes= res[2].status === 'fulfilled' ? res[2].value : null;
     
-    // const blogsRes= res[2].status === 'fulfilled' ? res[2].value : 
-    //  (() => {
-    //     console.log("BLOG API FAILED:", res[2].reason);
-    //     return null;
-    //   })();
-    console.log("res data: ", compRes, servicesRes, blogsRes);
     return {
       props: {
         siteSettings:compRes?.data|| ({} as SiteSetting),
@@ -145,7 +139,7 @@ export const getStaticProps: GetStaticProps<HomeProps>= async () => {
       },
       revalidate:60 //forisr
     };
-  } catch (err) {
+  } catch {
     return {
       props: {
         siteSettings: null,services: [], blogs: [], error: 'Fail to sync cms records',
