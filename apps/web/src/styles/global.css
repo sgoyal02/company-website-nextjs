@@ -99,6 +99,11 @@ body {
     color: var(--accent-foreground);
   }
 
+  .btn-accent:hover {
+    background-color: #0284c7;
+    cursor: pointer;
+  }
+
   .service-card,
   .blog-card,
   .team-card {

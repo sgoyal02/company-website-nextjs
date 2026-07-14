@@ -79,7 +79,7 @@ describe('Home page tests-', () => {
   it('service section-test', () => {
     render(<Home {...mockHomeData} error={null} />);
     expect(screen.getByText('Web Development')).toBeInTheDocument();
-    expect(screen.getByText('Rs.50000')).toBeInTheDocument();
+    expect(screen.getByText('Rs. 50000')).toBeInTheDocument();
   });
 
   it('err testing-api fail test', () => {

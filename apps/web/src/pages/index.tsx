@@ -2,9 +2,10 @@ import Head from 'next/head';
 import { GetStaticProps } from 'next';
 import { fetchStrapi } from '@/lib/strapi';
 import { HomeProps, SiteSetting } from '@/types';
-import { blockToTxt } from '@/utils/helpers';
+import { blockToTxt, formatDate } from '@/utils/helpers';
 import Image from 'next/image';
 import { STRAPI_URL } from '@/constants/CONFIG';
+import Link from 'next/link';
 
 export default function Home({ siteSettings, services, blogs, error }: HomeProps) {
   if (error) {
@@ -45,13 +46,15 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
       {/* service-- */}
       <section className="py-16 md:py-20 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-slate-900">Our Services</h2>
-          {/* <p className="text-slate-600 mt-3 text-lg">Professional solutions for your business</p> */}
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Our Services</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 items-stretch">
           {services.length > 0 ? (
             services.map((service) => (
-              <div key={service.id} className="service-card">
+              <div
+                key={service.id}
+                className="service-card group flex flex-col min-h-[480px] overflow-hidden relative"
+              >
                 <div className="relative w-full h-50 mb-6 overflow-hidden rounded-md">
                   <Image
                     src={service.image?.url ? `${STRAPI_URL}${service.image.url}` : '/noImg.jpg'}
@@ -61,13 +64,33 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
                     className="object-cover object-center hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-slate-600 line-clamp-4 mb-6">
-                  {blockToTxt(service.description)}
-                </p>
-                {service.price && (
-                  <p className="text-xl font-bold text-primary mt-auto">Rs.{service.price}</p>
-                )}
+                <div className="flex-1">
+                  <h3
+                    title={service.title}
+                    className="text-xl font-semibold mb-4 text-slate-900
+                line-clamp-2 group-hover:text-accent transition-colors"
+                  >
+                    {service.title}
+                  </h3>
+                  <p className="text-slate-600 line-clamp-4 leading-relaxed">
+                    {blockToTxt(service.description)}
+                  </p>
+                  <div className="mt-auto pt-6 flex items-center justify-between">
+                    {service.price ? (
+                      <div>
+                        <p className="text-xs text-slate-500 uppercase tracking-wide">
+                          Starting from
+                        </p>
+                        <p
+                          title={`Price Rs.${service.price}`}
+                          className="text-lg font-bold text-accent"
+                        >{`Rs. ${service.price}`}</p>
+                      </div>
+                    ) : (
+                      <span />
+                    )}
+                  </div>
+                </div>
               </div>
             ))
           ) : (
@@ -81,11 +104,12 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
         <div className="text-center mb-12">
           <h2 className="text-3xl font-semibold text-slate-900">Latest Blogs</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
           {blogs.length > 0 ? (
             blogs.map((post) => (
               <div key={post.id} className="blog-card overflow-hidden group cursor-pointer">
-                <div className="relative w-full h-50 overflow-hidden">
+              <Link key={post.id} href={`/blog/${post.slug}`}>
+                <div className="relative w-full h-50 overflow-hidden rounded-md">
                   <Image
                     src={
                       post?.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'
@@ -96,17 +120,22 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
-                  <p className="text-sm text-slate-500 mb-3">
-                    {new Date(post.publishDate).toLocaleDateString('en-IN')}
-                  </p>
-                  <h3 className="text-xl font-semibold line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                <div className="p-6 min-h-[120px] flex flex-col">
+                  <p className="text-sm text-slate-500 mb-3">{formatDate(post.publishDate)}</p>
+                  <h3
+                    title={post.title}
+                    className="text-xl font-semibold line-clamp-3 mb-3 group-hover:text-accent transition-colors"
+                  >
                     {post.title}
                   </h3>
-                  <p className="text-slate-600 line-clamp-3 text-[15px] leading-relaxed">
+                  <p
+                    title={post.subTxt ?? ''}
+                    className="mt-auto text-slate-600 line-clamp-4 text-[15px] leading-relaxed"
+                  >
                     {post.subTxt || ''}
                   </p>
                 </div>
+              </Link>
               </div>
             ))
           ) : (

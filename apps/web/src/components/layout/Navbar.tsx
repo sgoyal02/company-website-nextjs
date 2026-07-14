@@ -26,19 +26,19 @@ export default function Navbar({ settings }: { settings?: SiteSetting | null }) 
         </Link>
 
         <div className="flex gap-6 font-medium text-slate-600 text-sm">
-          <Link href="/" className="hover:text-primary transition-colors">
+          <Link href="/" className="hover:text-primary transition-colors hover:underline">
             Home
           </Link>
-          <Link href="/about" className="hover:text-primary transition-colors">
+          <Link href="/about" className="hover:text-primary transition-colors hover:underline">
             About
           </Link>
-          <Link href="/services" className="hover:text-primary transition-colors">
+          <Link href="/services" className="hover:text-primary transition-colors hover:underline">
             Services
           </Link>
-          <Link href="/blog" className="hover:text-primary transition-colors">
+          <Link href="/blog" className="hover:text-primary transition-colors hover:underline">
             Blogs
           </Link>
-          <Link href="/contact" className="hover:text-primary transition-colors">
+          <Link href="/contact" className="hover:text-primary transition-colors hover:underline">
             Contact
           </Link>
         </div>
