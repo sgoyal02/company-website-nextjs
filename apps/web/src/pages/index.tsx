@@ -42,7 +42,7 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
         </div>
       </section>
 
-      {/* srvice-- */}
+      {/* service-- */}
       <section className="py-16 md:py-20 px-6 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-semibold text-slate-900">Our Services</h2>
