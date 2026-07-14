@@ -1,14 +1,13 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import {BlogsProps } from '@/types';
+import { BlogsProps } from '@/types';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { fetchStrapi } from '@/lib/strapi';
 import Image from 'next/image';
 import { STRAPI_URL } from '@/constants/CONFIG';
 
-
-export default function BlogPage({ initBlogs }:BlogsProps) {
-  const { data:blogs= initBlogs, isLoading, error } = useBlogPosts(initBlogs)
+export default function BlogPage({ initBlogs }: BlogsProps) {
+  const { data: blogs = initBlogs, isLoading, error } = useBlogPosts(initBlogs);
   if (error) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-6">
@@ -37,15 +36,15 @@ export default function BlogPage({ initBlogs }:BlogsProps) {
         {blogs.length > 0 ? (
           blogs.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`} className="blog-card group block">
-                <div className="relative overflow-hidden rounded-md w-full h-52">
-                  <Image
-                    src={post.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
-                    alt={post.title}
-                    fill
-                    unoptimized
-                    className="object-cover object-center group-hover:scale-105 transition-transform"
-                  />
-                </div>
+              <div className="relative overflow-hidden rounded-md w-full h-52">
+                <Image
+                  src={post.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'}
+                  alt={post.title}
+                  fill
+                  unoptimized
+                  className="object-cover object-center group-hover:scale-105 transition-transform"
+                />
+              </div>
               <div className="p-2">
                 <p className="text-sm text-slate-500 mb-3">
                   {new Date(post.publishDate).toLocaleDateString('en-IN')}- {post.author}
@@ -54,9 +53,7 @@ export default function BlogPage({ initBlogs }:BlogsProps) {
                   {post.title}
                 </h3>
                 <p className="text-slate-600 line-clamp-3 text-[15px]">{post.subTxt}</p>
-                <button className="btn btn-primary w-full btn-primary:hover">
-                  View Post
-                </button>
+                <button className="btn btn-primary w-full btn-primary:hover">View Post</button>
               </div>
             </Link>
           ))
@@ -66,20 +63,20 @@ export default function BlogPage({ initBlogs }:BlogsProps) {
       </div>
     </div>
   );
-};
+}
 
 //ssg and isr-
-export const getStaticProps:GetStaticProps<BlogsProps> = async () => {
+export const getStaticProps: GetStaticProps<BlogsProps> = async () => {
   try {
     const res = await fetchStrapi('blog-posts?populate=coverImage&sort=publishDate:desc');
     return {
-      props: {initBlogs: res.data},
-      revalidate: 60
+      props: { initBlogs: res.data },
+      revalidate: 60,
     };
-  } catch{
+  } catch {
     return {
-      props:{initBlogs:[]},
-      revalidate: 30
+      props: { initBlogs: [] },
+      revalidate: 30,
     };
   }
 };

@@ -8,8 +8,8 @@ import { formatDate } from '@/utils/helpers';
 import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function BlogDetail({ initPost, slug }: BlogPostProps) {
-  const {data:post= initPost, isLoading, error }=useBlogPost({slug, initData: initPost});
-  if (error||!post) {
+  const { data: post = initPost, isLoading, error } = useBlogPost({ slug, initData: initPost });
+  if (error || !post) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-6">
         <div className="text-center">
@@ -27,14 +27,14 @@ export default function BlogDetail({ initPost, slug }: BlogPostProps) {
     <article className="max-w-4xl mx-auto px-6 py-12">
       {post.coverImage?.url && (
         <div className="relative overflow-hidden rounded-md w-full h-72 mb-2">
-        <Image
-          src={`${STRAPI_URL}${post.coverImage.url}`}
-          alt={post.title}
-          fill
-          sizes="(max-width:768px) 100vw, 33vw"
-          className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
-          unoptimized
-        />
+          <Image
+            src={`${STRAPI_URL}${post.coverImage.url}`}
+            alt={post.title}
+            fill
+            sizes="(max-width:768px) 100vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+            unoptimized
+          />
         </div>
       )}
 
@@ -45,16 +45,16 @@ export default function BlogDetail({ initPost, slug }: BlogPostProps) {
         <h1 className="text-4xl font-bold text-slate-900 mt-6 leading-tight">{post.title}</h1>
       </div>
 
-      {isLoading ? 
-      <p className="text-center text-slate-500 mt-8">Loading content...</p>
-      :
-      <div className="max-w-none text-slate-700">
-       <BlocksRenderer content={post.blogContent || post.subTxt} />
-       </div>
-    }
+      {isLoading ? (
+        <p className="text-center text-slate-500 mt-8">Loading content...</p>
+      ) : (
+        <div className="max-w-none text-slate-700">
+          <BlocksRenderer content={post.blogContent || post.subTxt} />
+        </div>
+      )}
     </article>
   );
-};
+}
 
 //staticpath get-
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -69,12 +69,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps<BlogPostProps>= async({ params }) => {
-  const slugPart= params?.slug  ?? "";
-   const slug = typeof slugPart === "string" ? slugPart
-                : Array.isArray(slugPart) ? slugPart[0] : "";
+export const getStaticProps: GetStaticProps<BlogPostProps> = async ({ params }) => {
+  const slugPart = params?.slug ?? '';
+  const slug = typeof slugPart === 'string' ? slugPart : Array.isArray(slugPart) ? slugPart[0] : '';
   try {
-    const res = await fetchStrapi(`blog-posts?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=coverImage`);
+    const res = await fetchStrapi(
+      `blog-posts?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=coverImage`
+    );
     return {
       props: {
         initPost: res.data[0] || null,
@@ -84,7 +85,7 @@ export const getStaticProps: GetStaticProps<BlogPostProps>= async({ params }) =>
     };
   } catch {
     return {
-      props: {initPost: null, slug: params?.slug as string },
+      props: { initPost: null, slug: params?.slug as string },
     };
   }
 };

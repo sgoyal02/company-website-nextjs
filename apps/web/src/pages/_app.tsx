@@ -7,25 +7,25 @@ import ErrorWrap from '@/components/shared/ErrorWrap';
 import { AppInitProps } from '@/types';
 import { fetchStrapi } from '@/lib/strapi';
 
-export default function MyApp({ Component, pageProps ,settings }: AppProps & AppInitProps) {
+export default function MyApp({ Component, pageProps, settings }: AppProps & AppInitProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
       <Layout settings={settings}>
         <ErrorWrap>
-        <Component {...pageProps} />
+          <Component {...pageProps} />
         </ErrorWrap>
       </Layout>
     </QueryClientProvider>
   );
 }
 
-MyApp.getInitialProps= async() => {
+MyApp.getInitialProps = async () => {
   try {
     const res = await fetchStrapi('site-setting?populate=*');
-    return {settings: res.data};
+    return { settings: res.data };
   } catch {
-    return {settings: null};
+    return { settings: null };
   }
 };

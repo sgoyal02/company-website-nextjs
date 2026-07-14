@@ -31,13 +31,13 @@ const mockBlogs = [
     slug: 'why-businesses-need-custom-software',
     author: 'Sakshi goyal',
     publishDate: '2026-07-10',
-    isFeatured:true,
+    isFeatured: true,
     subTxt: 'Custom software solutions help businesses grow.',
     coverImage: {
       url: '/software.jpg',
-      alternativeText:"abc"
+      alternativeText: 'abc',
     },
-     blogContent: [
+    blogContent: [
       {
         type: 'paragraph',
         children: [
@@ -55,10 +55,10 @@ const mockBlogs = [
     slug: 'cloud-applications-benefits',
     author: 'Jane Smith',
     publishDate: '2026-07-09',
-    isFeatured:false,
+    isFeatured: false,
     subTxt: 'Cloud technology improves scalability.',
     coverImage: null,
-     blogContent: [
+    blogContent: [
       {
         type: 'paragraph',
         children: [
@@ -70,8 +70,7 @@ const mockBlogs = [
       },
     ],
   },
-]satisfies BlogPost[];
-
+] satisfies BlogPost[];
 
 describe('Blogs page- tests', () => {
   beforeEach(() => {
@@ -83,29 +82,15 @@ describe('Blogs page- tests', () => {
   });
 
   it('blog hedaing-test', () => {
-
-    render(
-      <BlogPage initBlogs={mockBlogs} />
-    );
+    render(<BlogPage initBlogs={mockBlogs} />);
     expect(screen.getByText('Latest insights and updates')).toBeInTheDocument();
-
   });
-
-
 
   it('blog render- testing', () => {
-    render(
-      <BlogPage initBlogs={mockBlogs} />
-    );
-    expect(
-      screen.getByText('Why Businesses Need Custom Software')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('Benefits of Cloud Applications')
-    ).toBeInTheDocument();
-
+    render(<BlogPage initBlogs={mockBlogs} />);
+    expect(screen.getByText('Why Businesses Need Custom Software')).toBeInTheDocument();
+    expect(screen.getByText('Benefits of Cloud Applications')).toBeInTheDocument();
   });
-
 
   it('shows loading state while fetching blogs', () => {
     (useBlogPosts as jest.Mock).mockReturnValue({
@@ -114,11 +99,7 @@ describe('Blogs page- tests', () => {
       error: null,
     });
 
-    render(
-      <BlogPage initBlogs={mockBlogs} />
-    );
+    render(<BlogPage initBlogs={mockBlogs} />);
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-
   });
-
 });

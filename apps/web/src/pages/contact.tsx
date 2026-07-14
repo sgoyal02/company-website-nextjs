@@ -5,7 +5,7 @@ import { contactSchema, ContactFormData } from '@/validations/contact';
 import { STRAPI_URL } from '@/constants/CONFIG';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState<ContactFormData>({name: '',email: '',message: '',});
+  const [formData, setFormData] = useState<ContactFormData>({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
 
   const mutation = useMutation({
@@ -20,7 +20,7 @@ export default function ContactPage() {
       return res.json();
     },
     onSuccess: () => {
-      alert("Thanks, your msg sent successfully.");
+      alert('Thanks, your msg sent successfully.');
       setFormData({ name: '', email: '', message: '' });
       setErrors({});
     },
@@ -28,30 +28,30 @@ export default function ContactPage() {
       if (err instanceof Error) {
         alert(err.message);
       } else {
-        alert("Something went wrong. Please try again.");
+        alert('Something went wrong. Please try again.');
       }
     },
   });
 
-  const handleChange= (e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) => {
-    const {name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof ContactFormData]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const validData= contactSchema.parse(formData);
+      const validData = contactSchema.parse(formData);
       mutation.mutate(validData);
-    }catch (err) {
+    } catch (err) {
       if (err instanceof z.ZodError) {
         const fieldErrors: Partial<ContactFormData> = {};
         err.issues.forEach((err) => {
           if (err.path[0]) {
-            fieldErrors[err.path[0] as keyof ContactFormData]= err.message;
+            fieldErrors[err.path[0] as keyof ContactFormData] = err.message;
           }
         });
         setErrors(fieldErrors);
@@ -115,7 +115,7 @@ export default function ContactPage() {
             disabled={mutation.isPending}
             className="btn btn-primary w-full py-2 text-sm font-medium disabled:opacity-70"
           >
-            {mutation.isPending ? "Sending..." : "Send Message"}
+            {mutation.isPending ? 'Sending...' : 'Send Message'}
           </button>
         </form>
       </div>

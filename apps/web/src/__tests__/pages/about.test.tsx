@@ -20,10 +20,8 @@ jest.mock('next/image', () => ({
 }));
 
 jest.mock('@strapi/blocks-react-renderer', () => ({
-  BlocksRenderer: ({ content }: {content: unknown;}) => (
-    <div data-testid="blocks-renderer">
-      {JSON.stringify(content)}
-    </div>
+  BlocksRenderer: ({ content }: { content: unknown }) => (
+    <div data-testid="blocks-renderer">{JSON.stringify(content)}</div>
   ),
 }));
 
@@ -37,7 +35,7 @@ const mockBlocks = [
       },
     ],
   },
-]satisfies StrapiRichText;
+] satisfies StrapiRichText;
 
 const mockAboutData = {
   title: 'About Us',
@@ -48,21 +46,13 @@ const mockAboutData = {
 
 describe('About page-tests', () => {
   it('test- about page title', () => {
-    render(<AboutPage aboutData={mockAboutData} teamMem={[]} error={null}/>);
+    render(<AboutPage aboutData={mockAboutData} teamMem={[]} error={null} />);
     expect(screen.getByText('About Us')).toBeInTheDocument();
   });
 
   it('errtest- about data fails', () => {
-    render(
-      <AboutPage
-        aboutData={null}
-        teamMem={[]}
-        error="Failed to load about page"
-      />
-    );
+    render(<AboutPage aboutData={null} teamMem={[]} error="Failed to load about page" />);
     expect(screen.getByText('About page load error')).toBeInTheDocument();
-    expect(
-      screen.getByText('Failed to load about page')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Failed to load about page')).toBeInTheDocument();
   });
 });

@@ -1,8 +1,10 @@
 'use client';
 import React from 'react';
 
-class ErrorWrap extends React.Component<{ children: React.ReactNode },
-{ hasError: boolean; error?: Error }> {
+class ErrorWrap extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
   constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
@@ -18,10 +20,7 @@ class ErrorWrap extends React.Component<{ children: React.ReactNode },
           <div className="text-center">
             <h2 className="text-xl font-bold text-red-500">Something went wrong</h2>
             <p className="mt-3 text-slate-500">{this.state.error?.message}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-6 btn btn-primary"
-            >
+            <button onClick={() => window.location.reload()} className="mt-6 btn btn-primary">
               Retry
             </button>
           </div>

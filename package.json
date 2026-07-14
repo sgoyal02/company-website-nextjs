@@ -15,7 +15,9 @@
     "docker:down": "docker compose -f infra/docker-compose.yml down",
     "lint": "pnpm --filter web lint",
     "test": "pnpm --filter web test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format": "prettier --write apps/web",
+    "format:check": "prettier --check apps/web"
   },
   "keywords": [],
   "author": "",

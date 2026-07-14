@@ -5,9 +5,9 @@
   --foreground: #111827;
 
   /*comp color*/
-  --primary: #1e40af;      
+  --primary: #1e40af;
   --primary-foreground: #ffffff;
-  --accent: #0ea5e9;    
+  --accent: #0ea5e9;
   --accent-foreground: #ffffff;
 
   --success: #10b981;
@@ -91,7 +91,7 @@ body {
 
   .btn-primary:hover {
     background-color: #1e3a8a;
-    cursor:pointer
+    cursor: pointer;
   }
 
   .btn-accent {

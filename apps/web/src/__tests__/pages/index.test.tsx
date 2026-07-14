@@ -30,7 +30,7 @@ const mockHomeData = {
       id: 1,
       title: 'Web Development',
       price: 50000,
-    slug: 'web-development',
+      slug: 'web-development',
       isFeatured: true,
       description: [
         {
@@ -68,62 +68,31 @@ const mockHomeData = {
   ],
 
   blogs: [],
-} satisfies Omit<HomeProps, "error">;
-
+} satisfies Omit<HomeProps, 'error'>;
 
 describe('Home page tests-', () => {
-
-
   it('company info -test', () => {
-    render(
-      <Home
-        {...mockHomeData}
-        error={null}
-      />
-    );
+    render(<Home {...mockHomeData} error={null} />);
     expect(screen.getByText('Build better digital experiences')).toBeInTheDocument();
   });
 
-
-
   it('service section-test', () => {
-    render(
-      <Home
-        {...mockHomeData}
-        error={null}
-      />
-    );
+    render(<Home {...mockHomeData} error={null} />);
     expect(screen.getByText('Web Development')).toBeInTheDocument();
     expect(screen.getByText('Rs.50000')).toBeInTheDocument();
   });
 
-
   it('err testing-api fail test', () => {
     render(
-      <Home
-        siteSettings={null}
-        services={[]}
-        blogs={[]}
-        error="Failed to sync cms records"
-      />
+      <Home siteSettings={null} services={[]} blogs={[]} error="Failed to sync cms records" />
     );
 
+    expect(screen.getByText('Unable to load page')).toBeInTheDocument();
 
-    expect(
-      screen.getByText('Unable to load page')
-    ).toBeInTheDocument();
-
-
-    expect(
-      screen.getByText('Failed to sync cms records')
-    ).toBeInTheDocument();
-
+    expect(screen.getByText('Failed to sync cms records')).toBeInTheDocument();
   });
 
-
-
   it('shows empty state when no services and blogs exist', () => {
-
     render(
       <Home
         siteSettings={{
@@ -137,16 +106,8 @@ describe('Home page tests-', () => {
       />
     );
 
+    expect(screen.getByText('No services available.')).toBeInTheDocument();
 
-    expect(
-      screen.getByText('No services available.')
-    ).toBeInTheDocument();
-
-
-    expect(
-      screen.getByText('No blogs available.')
-    ).toBeInTheDocument();
-
+    expect(screen.getByText('No blogs available.')).toBeInTheDocument();
   });
-
 });
