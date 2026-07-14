@@ -108,34 +108,34 @@ export default function Home({ siteSettings, services, blogs, error }: HomeProps
           {blogs.length > 0 ? (
             blogs.map((post) => (
               <div key={post.id} className="blog-card overflow-hidden group cursor-pointer">
-              <Link key={post.id} href={`/blog/${post.slug}`}>
-                <div className="relative w-full h-50 overflow-hidden rounded-md">
-                  <Image
-                    src={
-                      post?.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'
-                    }
-                    alt={post.title}
-                    fill
-                    unoptimized
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 min-h-[120px] flex flex-col">
-                  <p className="text-sm text-slate-500 mb-3">{formatDate(post.publishDate)}</p>
-                  <h3
-                    title={post.title}
-                    className="text-xl font-semibold line-clamp-3 mb-3 group-hover:text-accent transition-colors"
-                  >
-                    {post.title}
-                  </h3>
-                  <p
-                    title={post.subTxt ?? ''}
-                    className="mt-auto text-slate-600 line-clamp-4 text-[15px] leading-relaxed"
-                  >
-                    {post.subTxt || ''}
-                  </p>
-                </div>
-              </Link>
+                <Link key={post.id} href={`/blog/${post.slug}`}>
+                  <div className="relative w-full h-50 overflow-hidden rounded-md">
+                    <Image
+                      src={
+                        post?.coverImage?.url ? `${STRAPI_URL}${post.coverImage.url}` : '/noImg.jpg'
+                      }
+                      alt={post.title}
+                      fill
+                      unoptimized
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-6 min-h-[120px] flex flex-col">
+                    <p className="text-sm text-slate-500 mb-3">{formatDate(post.publishDate)}</p>
+                    <h3
+                      title={post.title}
+                      className="text-xl font-semibold line-clamp-3 mb-3 group-hover:text-accent transition-colors"
+                    >
+                      {post.title}
+                    </h3>
+                    <p
+                      title={post.subTxt ?? ''}
+                      className="mt-auto text-slate-600 line-clamp-4 text-[15px] leading-relaxed"
+                    >
+                      {post.subTxt || ''}
+                    </p>
+                  </div>
+                </Link>
               </div>
             ))
           ) : (

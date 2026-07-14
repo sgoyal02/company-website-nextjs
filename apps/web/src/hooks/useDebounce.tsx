@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-export function useDebounce<T>(value:T,delay:number = 400){
-  const [debVal,setDevVal] = useState(value);
+export function useDebounce<T>(value: T, delay: number = 400) {
+  const [debVal, setDevVal] = useState(value);
 
-  useEffect(()=>{
-    const timer=setTimeout(()=>{
+  useEffect(() => {
+    const timer = setTimeout(() => {
       setDevVal(value);
-    },delay);
+    }, delay);
 
-    return ()=>clearTimeout(timer);
-  },[value,delay]);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
 
   return debVal;
 }

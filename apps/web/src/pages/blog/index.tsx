@@ -9,20 +9,25 @@ import { useMemo, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
 
 export default function BlogPage({ initBlogs }: BlogsProps) {
-  const { data: blogs = initBlogs, isLoading, isFetching, error, refetch } = useBlogPosts(initBlogs);
-  const [searchTxt, setSearchTxt] = useState("");
+  const {
+    data: blogs = initBlogs,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+  } = useBlogPosts(initBlogs);
+  const [searchTxt, setSearchTxt] = useState('');
   const debounceSearch = useDebounce(searchTxt, 400);
 
   const filteredBlogs = useMemo(() => {
-    if (!debounceSearch.trim())
-      return blogs;
+    if (!debounceSearch.trim()) return blogs;
 
     const inpSearch = debounceSearch.toLowerCase();
     return blogs.filter((post) => {
-      const title = post.title?.toLowerCase() || "";
-      const subTxt = post.subTxt?.toLowerCase() || "";
-      return (title.includes(inpSearch) || subTxt.includes(inpSearch));
-    })
+      const title = post.title?.toLowerCase() || '';
+      const subTxt = post.subTxt?.toLowerCase() || '';
+      return title.includes(inpSearch) || subTxt.includes(inpSearch);
+    });
   }, [blogs, debounceSearch]);
 
   if (error) {
@@ -57,26 +62,36 @@ export default function BlogPage({ initBlogs }: BlogsProps) {
       {/*search-ui-- */}
       <div className="mb-10 relative w-full max-w-xl">
         <div className="relative group">
-        <input value={searchTxt}
-          onChange={(e) =>
-            setSearchTxt(e.target.value)
-          }
-          placeholder="Search blogs.."
-          className="w-full rounded-md borderborder-slate-200
+          <input
+            value={searchTxt}
+            onChange={(e) => setSearchTxt(e.target.value)}
+            placeholder="Search blogs.."
+            className="w-full rounded-md borderborder-slate-200
         bg-white px-5 py-3 pr-12 text-slate-900 text-sm shadow-sm outline-none
         focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-        />
-        <div className="absolute right-4 top-1/2 -translate-y-1/2
-            text-slate-400 group-focus-within:text-primary transition">
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 01-14 0 7 7 0 0114 0z" />
-        </svg>
-        </div>
+          />
+          <div
+            className="absolute right-4 top-1/2 -translate-y-1/2
+            text-slate-400 group-focus-within:text-primary transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 01-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
         </div>
         {searchTxt && (
-          <p className="mt-2 text-sm text-slate-500">
-            Showing {filteredBlogs.length} results
-          </p>
+          <p className="mt-2 text-sm text-slate-500">Showing {filteredBlogs.length} results</p>
         )}
       </div>
 
